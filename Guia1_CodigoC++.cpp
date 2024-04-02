@@ -15,7 +15,7 @@ public:
         descripcion = "Sin etiqueta"; 
     } 
 }; 
-
+//AAAAAAAAAAAAAAAAAAAAAAAAAAAA
  
 class Pedidos { //inicio de clase 
 
