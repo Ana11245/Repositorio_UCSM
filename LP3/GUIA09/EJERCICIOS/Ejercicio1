@@ -1,1 +1,81 @@
+package e;
+
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.Color;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import javax.swing.JDesktopPane;
+import javax.swing.JMenu;
+import javax.swing.JSpinner;
+import java.awt.FlowLayout;
+
+public class EJEMPLO extends JFrame {
+
+	private static final long serialVersionUID = 1L;
+	private JPanel contentPane;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					EJEMPLO frame = new EJEMPLO();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public EJEMPLO() {
+		setTitle("EJEMPLO");
+		setBackground(new Color(225, 163, 239));
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 450, 300);
+		contentPane = new JPanel();
+		FlowLayout flowLayout = (FlowLayout) contentPane.getLayout();
+		contentPane.setBackground(new Color(255, 206, 231));
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		setContentPane(contentPane);
+		
+		JButton btnNewButton_1 = new JButton("FRASE 1");
+		btnNewButton_1.setForeground(Color.ORANGE);
+		btnNewButton_1.setBackground(new Color(255, 255, 128));
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		contentPane.add(btnNewButton_1);
+		
+		JButton btnNewButton = new JButton("FRASE 2");
+		btnNewButton.setVerticalAlignment(SwingConstants.BOTTOM);
+		btnNewButton.setHorizontalAlignment(SwingConstants.TRAILING);
+		btnNewButton.setForeground(Color.RED);
+		btnNewButton.setBackground(Color.RED);
+		contentPane.add(btnNewButton);
+		
+		JButton btnNewButton_2 = new JButton("FRASE 3");
+		btnNewButton_2.setForeground(Color.BLUE);
+		btnNewButton_2.setBackground(Color.BLUE);
+		contentPane.add(btnNewButton_2);
+		
+		JDesktopPane desktopPane = new JDesktopPane();
+		contentPane.add(desktopPane);
+	}
+
+}
 
