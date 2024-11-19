@@ -1,1 +1,189 @@
+package E;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Random;
+
+public class Aplicaciones {
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new JuegoAdivinaNumero());
+        SwingUtilities.invokeLater(() -> new Calculadora());
+        SwingUtilities.invokeLater(() -> new FrasesMotivacionales());
+    }
+}
+
+//CON GRIDLAYOUT
+class JuegoAdivinaNumero extends JFrame {
+    private int numeroSecreto;
+    private int intentos;
+
+    public JuegoAdivinaNumero() {
+        super("Adivina el Número");
+        setLayout(new GridLayout(3, 1, 5, 5));
+
+        // Generar número RANDM Y TAMBIEN SECRETO
+        Random random = new Random();
+        numeroSecreto = random.nextInt(100) + 1;
+        intentos = 0;
+
+        JLabel mensaje = new JLabel("Adivina un número entre 1 y 100", JLabel.CENTER);
+        add(mensaje);
+
+        JTextField entrada = new JTextField();
+        add(entrada);
+
+        JButton verificar = new JButton("Intentar");
+        verificar.addActionListener(e -> {
+            try {
+                int adivinanza = Integer.parseInt(entrada.getText());
+                intentos++;
+                if (adivinanza == numeroSecreto) {
+                    mensaje.setText("¡Correcto! Lo lograste en " + intentos + " intentos.");
+                    verificar.setEnabled(false);
+                } else if (adivinanza < numeroSecreto) {
+                    mensaje.setText("Demasiado bajo. ¡Intenta de nuevo!");
+                } else {
+                    mensaje.setText("Demasiado alto. ¡Intenta de nuevo!");
+                }
+            } catch (NumberFormatException ex) {
+                mensaje.setText("Por favor, ingresa un número válido.");
+            }
+        });
+        add(verificar);
+
+        setSize(300, 200);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(true);
+    }
+}
+
+//BORDERLAYOUT EN ESTE CASO CALCULADORA
+class Calculadora extends JFrame {
+ private String operador;
+ private double numero1;
+
+ public Calculadora() {
+     super("Calculadora ");
+     setLayout(new BorderLayout(5, 5));
+
+     // Panel de entrada
+     JTextField pantalla = new JTextField();
+     pantalla.setHorizontalAlignment(JTextField.RIGHT);
+     pantalla.setEditable(false); // No se puede escribir directamente en la pantalla
+     add(pantalla, BorderLayout.NORTH);
+
+     // Panel de botones
+     JPanel panelBotones = new JPanel();
+     panelBotones.setLayout(new GridLayout(4, 4, 5, 5));
+
+     String[] botones = {"7", "8", "9", "/", 
+                         "4", "5", "6", "*", 
+                         "1", "2", "3", "-", 
+                         "C", "0", "=", "+"};
+
+     for (String texto : botones) {
+         JButton boton = new JButton(texto);
+         panelBotones.add(boton);
+
+         boton.addActionListener(new ActionListener() {
+             @Override
+             public void actionPerformed(ActionEvent e) {
+                 String comando = boton.getText();
+
+                 if ("0123456789".contains(comando)) {
+                     // Agregar dígitos a la pantalla
+                     pantalla.setText(pantalla.getText() + comando);
+                 } else if (comando.equals("C")) {
+                     // Borrar la pantalla y reiniciar valores
+                     pantalla.setText("");
+                     operador = null;
+                     numero1 = 0;
+                 } else if (comando.equals("=")) {
+                     // operacion
+                     try {
+                         double numero2 = Double.parseDouble(pantalla.getText());
+                         double resultado = realizarOperacion(numero1, numero2, operador);
+                         pantalla.setText(String.valueOf(resultado));
+                     } catch (NumberFormatException ex) {
+                         pantalla.setText("Error");
+                     }
+                 } else {
+                     // Guardar el operador y el primer número
+                     try {
+                         numero1 = Double.parseDouble(pantalla.getText());
+                         operador = comando;
+                         pantalla.setText(""); // ESTO ES PARA: limpiar la pantalla para el segundo número
+                     } catch (NumberFormatException ex) {
+                         pantalla.setText("Error");
+                     }
+                 }
+             }
+         });
+     }
+
+     add(panelBotones, BorderLayout.CENTER);
+
+     setSize(300, 400);
+     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+     setVisible(true);
+ }
+
+ private double realizarOperacion(double numero1, double numero2, String operador) {
+     return switch (operador) {
+         case "+" -> numero1 + numero2;
+         case "-" -> numero1 - numero2;
+         case "*" -> numero1 * numero2;
+         case "/" -> numero2 != 0 ? numero1 / numero2 : Double.NaN; // Manejo de división entre cero
+         default -> 0;
+     };
+ }
+}
+
+
+// CON FLOWLAYOUT
+class FrasesMotivacionales extends JFrame {
+    public FrasesMotivacionales() {
+        super("Frases Motivacionales");
+        setLayout(new FlowLayout());
+
+        // Campo para el nombre
+        JTextField nombreField = new JTextField(15);
+        add(new JLabel("Ingresa tu nombre:"));
+        add(nombreField);
+
+        JLabel fraseLabel = new JLabel("");
+        add(fraseLabel);
+
+        JButton[] botonesFrases = {
+            new JButton("Frase 1"),
+            new JButton("Frase 2"),
+            new JButton("Frase 3")
+        };
+
+        String[] frases = {
+            "NUNCA TE RINDAS, %s Puedes lograr grandes cosas.",
+            "Confia en tus habilidades, %s El mundo esta lleno de oportunidades.",
+            "CADA DIA ES UN NUEVO COMIENZO, %s Aprovecha al maximo."
+        };
+
+        for (int i = 0; i < botonesFrases.length; i++) {
+            int index = i;
+            botonesFrases[i].addActionListener(e -> {
+                String nombre = nombreField.getText();
+                if (!nombre.isEmpty()) {
+                    fraseLabel.setText(String.format(frases[index], nombre));
+                } else {
+                    fraseLabel.setText("....................No ingresaste tu nombre, ingresa tu nombre................ \n");
+  
+                }
+            });
+            add(botonesFrases[i]);
+        }
+
+        setSize(350, 200);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(true);
+    }
+}
 
