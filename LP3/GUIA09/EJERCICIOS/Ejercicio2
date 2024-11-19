@@ -1,0 +1,174 @@
+package e;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Toolkit;
+
+public class EJEMPLO extends JFrame {
+    private JTextField txtNombre, txtDocumento, txtFechaViaje;
+    private JCheckBox chkAudifonos, chkManta, chkRevistas;
+    private JRadioButton rdbPrimero, rdbSegundo;
+    private JComboBox<String> cmbOrigen, cmbDestino;
+    private JComboBox<String> cmbCalidad;
+    private JButton btnReiniciar, btnResumen;
+
+    public EJEMPLO() {
+    	setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\ESPERANZA\\Downloads\\854faee24f83d86e28785d1044596609-removebg-preview.png"));
+    	getContentPane().setBackground(new Color(204, 185, 255));
+    	setBackground(new Color(156, 119, 255));
+        setTitle("Compra de Pasajes");
+        setSize(700, 480);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new GridLayout(10, 2, 5, 5));
+
+        JLabel label_1 = new JLabel("Nombre del Pasajero:");
+        label_1.setFont(new Font("Lucida Calligraphy", Font.PLAIN, 14));
+        getContentPane().add(label_1);
+        txtNombre = new JTextField();
+        txtNombre.setFont(new Font("Lucida Calligraphy", Font.PLAIN, 10));
+        getContentPane().add(txtNombre);
+        
+        JLabel label = new JLabel("Documento de Identidad:");
+        label.setFont(new Font("Lucida Calligraphy", Font.PLAIN, 14));
+        label.setBackground(new Color(255, 255, 128));
+        getContentPane().add(label);
+        txtDocumento = new JTextField();
+        txtDocumento.setFont(new Font("Lucida Calligraphy", Font.PLAIN, 10));
+        getContentPane().add(txtDocumento);
+        
+        JLabel label_2 = new JLabel("Fecha de Viaje (dd/mm/yyyy):");
+        label_2.setFont(new Font("Lucida Calligraphy", Font.PLAIN, 13));
+        getContentPane().add(label_2);
+        txtFechaViaje = new JTextField();
+        txtFechaViaje.setFont(new Font("Lucida Calligraphy", Font.PLAIN, 10));
+        getContentPane().add(txtFechaViaje);
+
+        ButtonGroup grupoPiso = new ButtonGroup();
+        rdbPrimero = new JRadioButton("1er Piso");
+        rdbPrimero.setFont(new Font("Lucida Calligraphy", Font.PLAIN, 10));
+        rdbSegundo = new JRadioButton("2do Piso");
+        rdbSegundo.setFont(new Font("Lucida Calligraphy", Font.PLAIN, 10));
+        grupoPiso.add(rdbPrimero);
+        grupoPiso.add(rdbSegundo);
+
+        JLabel label_3 = new JLabel("Seleccione Piso:");
+        label_3.setFont(new Font("Lucida Calligraphy", Font.PLAIN, 14));
+        getContentPane().add(label_3);
+        JPanel panelPiso = new JPanel();
+        panelPiso.add(rdbPrimero);
+        panelPiso.add(rdbSegundo);
+        getContentPane().add(panelPiso);
+
+        JLabel label_4 = new JLabel("Servicios Opcionales:");
+        label_4.setFont(new Font("Lucida Calligraphy", Font.PLAIN, 14));
+        getContentPane().add(label_4);
+        JPanel panelServicios = new JPanel();
+        chkAudifonos = new JCheckBox("Audífonos");
+        chkAudifonos.setFont(new Font("Lucida Calligraphy", Font.PLAIN, 10));
+        chkManta = new JCheckBox("Manta");
+        chkManta.setFont(new Font("Lucida Calligraphy", Font.PLAIN, 10));
+        chkRevistas = new JCheckBox("Revistas");
+        chkRevistas.setFont(new Font("Lucida Calligraphy", Font.PLAIN, 10));
+        panelServicios.add(chkAudifonos);
+        panelServicios.add(chkManta);
+        panelServicios.add(chkRevistas);
+        getContentPane().add(panelServicios);
+
+        JLabel label_5 = new JLabel("Seleccione Origen:");
+        label_5.setFont(new Font("Lucida Calligraphy", Font.PLAIN, 14));
+        getContentPane().add(label_5);
+        cmbOrigen = new JComboBox<>(new String[]{"Lima", "Arequipa", "Cusco"});
+        cmbOrigen.setFont(new Font("Lucida Calligraphy", Font.PLAIN, 10));
+        getContentPane().add(cmbOrigen);
+
+        JLabel label_6 = new JLabel("Seleccione Destino:");
+        label_6.setFont(new Font("Lucida Calligraphy", Font.PLAIN, 14));
+        getContentPane().add(label_6);
+        cmbDestino = new JComboBox<>(new String[]{"Trujillo", "Tacna", "Piura", "Cusco"});
+        cmbDestino.setFont(new Font("Lucida Calligraphy", Font.PLAIN, 10));
+        getContentPane().add(cmbDestino);
+
+        JLabel label_7 = new JLabel("Calidad de Servicio:");
+        label_7.setFont(new Font("Lucida Calligraphy", Font.PLAIN, 14));
+        getContentPane().add(label_7);
+        cmbCalidad = new JComboBox<>(new String[]{"Económico", "Standard", "VIP"});
+        cmbCalidad.setFont(new Font("Lucida Calligraphy", Font.PLAIN, 10));
+        getContentPane().add(cmbCalidad);
+
+        btnReiniciar = new JButton("Reiniciar Datos");
+        btnReiniciar.setFont(new Font("Lucida Calligraphy", Font.PLAIN, 10));
+        btnResumen = new JButton("Mostrar Resumen");
+        btnResumen.setFont(new Font("Lucida Calligraphy", Font.PLAIN, 10));
+        getContentPane().add(btnReiniciar);
+        getContentPane().add(btnResumen);
+
+        btnReiniciar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                txtNombre.setText("");
+                txtDocumento.setText("");
+                txtFechaViaje.setText("");
+                grupoPiso.clearSelection();
+                chkAudifonos.setSelected(false);
+                chkManta.setSelected(false);
+                chkRevistas.setSelected(false);
+                cmbOrigen.setSelectedIndex(0);
+                cmbDestino.setSelectedIndex(0);
+                cmbCalidad.setSelectedIndex(0);
+                JOptionPane.showMessageDialog(null, "Datos Reiniciados", "Reiniciar", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+
+        btnResumen.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String nombre = txtNombre.getText();
+                String documento = txtDocumento.getText();
+                String fechaViaje = txtFechaViaje.getText();
+                String piso = rdbPrimero.isSelected() ? "1er Piso" : (rdbSegundo.isSelected() ? "2do Piso" : "No Seleccionado");
+
+                String servicios = "";
+                if (chkAudifonos.isSelected()) servicios += "Audífonos, ";
+                if (chkManta.isSelected()) servicios += "Manta, ";
+                if (chkRevistas.isSelected()) servicios += "Revistas, ";
+                if (servicios.isEmpty()) servicios = "Ninguno";
+                else servicios = servicios.substring(0, servicios.length() - 2);
+
+                String origen = (String) cmbOrigen.getSelectedItem();
+                String destino = (String) cmbDestino.getSelectedItem();
+                String calidad = (String) cmbCalidad.getSelectedItem();
+
+                String mensaje = "Resumen de compras:\n"
+                        + "Nombre: " + nombre + "\n"
+                        + "Documento: " + documento + "\n"
+                        + "Fecha de Viaje: " + fechaViaje + "\n"
+                        + "Piso: " + piso + "\n"
+                        + "Servicios Opcionales: " + servicios + "\n"
+                        + "Origen: " + origen + "\n"
+                        + "Destino: " + destino + "\n"
+                        + "Calidad de Servicio: " + calidad;
+                JOptionPane.showMessageDialog(null, mensaje, "Resumen", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+
+        setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        // Creating an instance of the window and making it visible
+        new EJEMPLO();
+    }
+}
