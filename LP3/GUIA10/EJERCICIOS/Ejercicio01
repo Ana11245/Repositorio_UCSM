@@ -1,1 +1,168 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+
+public class AlquilerCarros {
+    private JFrame mainFrame;
+    private ArrayList<String[]> registros = new ArrayList<>();
+    private ArrayList<String[]> alquileres = new ArrayList<>();
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(AlquilerCarros::new);
+    }
+
+    public AlquilerCarros() {
+        mainFrame = new JFrame("Bienvenidos al Alquiler San Cristóbal");
+        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainFrame.setSize(600, 400);
+        mainFrame.setLayout(new BorderLayout());
+
+        JLabel titleLabel = new JLabel("Bienvenidos al Alquiler San Cristóbal", JLabel.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        mainFrame.add(titleLabel, BorderLayout.NORTH);
+
+        
+        JPanel centerPanel = new JPanel(new FlowLayout());
+        JLabel messageLabel = new JLabel("Qué esperas para alquilar un carro", JLabel.CENTER);
+        messageLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+
+        JLabel imageLabel = new JLabel(new ImageIcon("C:\\imagen\\empresa.png"));
+        centerPanel.add(imageLabel);
+        centerPanel.add(messageLabel);
+
+        mainFrame.add(centerPanel, BorderLayout.CENTER);
+
+        JButton guiaButton = new JButton("Guía y alquileres de carros");
+        guiaButton.addActionListener(e -> mostrarMenu());
+        mainFrame.add(guiaButton, BorderLayout.SOUTH);
+
+        mainFrame.setVisible(true);
+    }
+
+    private void mostrarMenu() {
+        mainFrame.setVisible(false);
+
+        JFrame menuFrame = new JFrame("Guía de Alquileres");
+        menuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        menuFrame.setSize(600, 400);
+        menuFrame.setLayout(new GridLayout(5, 1));
+
+        JButton registroButton = new JButton("Registro");
+        registroButton.addActionListener(e -> mostrarRegistro(menuFrame));
+
+        JButton ingresoButton = new JButton("Ingreso al Alquiler");
+        ingresoButton.addActionListener(e -> mostrarAlquiler(menuFrame));
+
+        JButton serviciosButton = new JButton("Servicios y Seguros opcionales");
+        serviciosButton.addActionListener(e -> mostrarServicios(menuFrame));
+
+        JButton facturaButton = new JButton("Factura General");
+        facturaButton.addActionListener(e -> mostrarFactura(menuFrame));
+
+        JButton salirButton = new JButton("Salir");
+        salirButton.addActionListener(e -> System.exit(0));
+
+        menuFrame.add(registroButton);
+        menuFrame.add(ingresoButton);
+        menuFrame.add(serviciosButton);
+        menuFrame.add(facturaButton);
+        menuFrame.add(salirButton);
+
+        menuFrame.setVisible(true);
+    }
+
+    private void mostrarRegistro(JFrame parentFrame) {
+        parentFrame.setVisible(false);
+
+        JFrame registroFrame = new JFrame("Registro");
+        registroFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        registroFrame.setSize(400, 300);
+        registroFrame.setLayout(new GridLayout(5, 2));
+
+        JTextField nombreField = new JTextField();
+        JTextField apellidoField = new JTextField();
+        JTextField dniField = new JTextField();
+        JTextField telefonoField = new JTextField();
+
+        registroFrame.add(new JLabel("Nombre:"));
+        registroFrame.add(nombreField);
+        registroFrame.add(new JLabel("Apellido:"));
+        registroFrame.add(apellidoField);
+        registroFrame.add(new JLabel("DNI:"));
+        registroFrame.add(dniField);
+        registroFrame.add(new JLabel("Teléfono:"));
+        registroFrame.add(telefonoField);
+
+        JButton guardarButton = new JButton("Guardar");
+        guardarButton.addActionListener(e -> {
+            String[] registro = {nombreField.getText(), apellidoField.getText(), dniField.getText(), telefonoField.getText()};
+            registros.add(registro);
+            registroFrame.dispose();
+            parentFrame.setVisible(true);
+        });
+
+        registroFrame.add(guardarButton);
+        registroFrame.setVisible(true);
+    }
+
+    private void mostrarAlquiler(JFrame parentFrame) {
+        parentFrame.setVisible(false);
+
+        JFrame alquilerFrame = new JFrame("Ingreso al Alquiler");
+        alquilerFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        alquilerFrame.setSize(400, 400);
+        alquilerFrame.setLayout(new GridLayout(6, 2));
+
+        JTextField dniField = new JTextField();
+        JComboBox<String> tipoAutoBox = new JComboBox<>(new String[]{"Sedan", "SUV", "HatchBack", "Coupe", "Convertible", "Minivan"});
+        JTextField precioField = new JTextField("0");
+        JTextField fechaInicioField = new JTextField("dd/MM/yyyy");
+        JTextField fechaFinField = new JTextField("dd/MM/yyyy");
+
+        alquilerFrame.add(new JLabel("DNI:"));
+        alquilerFrame.add(dniField);
+        alquilerFrame.add(new JLabel("Tipo de Auto:"));
+        alquilerFrame.add(tipoAutoBox);
+        alquilerFrame.add(new JLabel("Precio por día:"));
+        alquilerFrame.add(precioField);
+        alquilerFrame.add(new JLabel("Fecha Inicio:"));
+        alquilerFrame.add(fechaInicioField);
+        alquilerFrame.add(new JLabel("Fecha Fin:"));
+        alquilerFrame.add(fechaFinField);
+
+        JButton guardarButton = new JButton("Guardar");
+        guardarButton.addActionListener(e -> {
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                Date inicio = sdf.parse(fechaInicioField.getText());
+                Date fin = sdf.parse(fechaFinField.getText());
+                long dias = (fin.getTime() - inicio.getTime()) / (1000 * 60 * 60 * 24);
+                double precioTotal = Double.parseDouble(precioField.getText()) * dias;
+
+                String[] alquiler = {dniField.getText(), tipoAutoBox.getSelectedItem().toString(), String.valueOf(precioTotal)};
+                alquileres.add(alquiler);
+
+                JOptionPane.showMessageDialog(alquilerFrame, "Alquiler guardado. Total: $" + precioTotal);
+                alquilerFrame.dispose();
+                parentFrame.setVisible(true);
+            } catch (ParseException ex) {
+                JOptionPane.showMessageDialog(alquilerFrame, "Formato de fecha inválido.");
+            }
+        });
+
+        alquilerFrame.add(guardarButton);
+        alquilerFrame.setVisible(true);
+    }
+
+    private void mostrarServicios(JFrame parentFrame) {
+    }
+
+    private void mostrarFactura(JFrame parentFrame) {
+    }
+}
 
