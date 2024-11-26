@@ -1,1 +1,43 @@
+import java.awt.Button;
+import java.io.File;
+
+import javax.print.attribute.standard.Media;
+
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.layout.VBox;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
+import javafx.stage.Stage;
+
+public class VideoPlayer extends Application {
+    private MediaPlayer mediaPlayer;
+
+    @Override
+    public void start(Stage primaryStage) {
+        // Ruta del video (cambia esto a la ruta de tu archivo)
+        String videoPath = "C:\\Users\\ESPERANZA\\Downloads\\gatito dando vueltas con musica de fondo__ Maxwell cat _3.mp4"; // Cambia esto a la ruta correcta
+        Media media = new Media(new File(videoPath).toURI().toString());
+        mediaPlayer = new MediaPlayer(media);
+        MediaView mediaView = new MediaView(mediaPlayer);
+
+        Button playButton = new Button("Play");
+        Button pauseButton = new Button("Pause");
+
+        playButton.setOnAction(e -> mediaPlayer.play());
+        pauseButton.setOnAction(e -> mediaPlayer.pause());
+
+        VBox root = new VBox();
+        root.getChildren().addAll(mediaView, playButton, pauseButton);
+        
+        Scene scene = new Scene(root, 600, 400);
+        primaryStage.setTitle("Reproductor de Video");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+}
 
